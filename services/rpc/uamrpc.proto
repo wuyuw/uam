@@ -1,0 +1,644 @@
+syntax = "proto3";
+
+package uamrpc;
+
+option go_package = "./uamrpc";
+
+message AuthLocal {
+  int64 uid = 1;
+  string username = 2;
+  string password = 3;
+  string salt = 4;
+}
+
+message GetAuthLocalByUsernameReq {
+  string username = 1;
+}
+
+message GetAuthLocalByUsernameResp {
+  AuthLocal authLocal = 1;
+}
+
+message AddAuthLocalReq {
+  string username = 1;
+  string password = 2;
+  string salt = 3;
+}
+
+message AddAuthLocalResp {
+}
+
+// 获取用户信息
+message GetUserInfoReq {
+  int64  uid = 1;
+}
+message GetUserInfoResp {
+  int64 uid = 1;
+  string nickname = 2;
+  string email = 3;
+  string phone = 4;
+}
+
+// ------------------------------------------
+
+message Client {
+  int64 id = 1;
+  string name = 2;
+  string appCode = 3;
+  string privateKey = 4;
+  string department = 5;
+  string maintainer = 6;
+  int64 status = 7;
+  int64 type = 8;
+  string createTime = 9;
+  string updateTime = 10;
+}
+
+// 获取客户端列表
+message GetClientListReq {
+}
+
+message GetClientListResp {
+  repeated Client list = 1;
+}
+
+message GetClientListByCodesReq {
+  repeated string appCodes = 1;
+}
+
+message GetClientListByCodesResp {
+  repeated Client list = 1;
+}
+
+// AppCode查询客户端
+message GetClientByCodeReq {
+  string appCode = 1;
+}
+
+message GetClientByCodeResp {
+  Client client = 1;
+}
+
+
+// 查询系统客户端
+message GetSysClientReq {
+}
+
+message GetSysClientResp {
+  Client client = 1;
+}
+
+// 添加客户端
+message AddClientReq {
+  string name = 1;
+  string appCode = 2;
+  string department = 3;
+  string maintainer = 4;
+}
+
+message AddClientResp {
+}
+
+// 更新客户端
+message UpdateClientReq {
+  int64 id = 1;
+  string name = 2;
+  string appCode = 3;
+  string department = 4;
+  string maintainer = 5;
+  int64 status = 6;
+}
+
+message UpdateClientResp {
+}
+
+// 删除客户端
+message DeleteClientReq {
+  int64 id = 1;
+}
+
+message DeleteClientResp {
+}
+
+// ------------------------------------------
+
+message Perm {
+  int64 id = 1;
+  int64 clientId = 2;
+  string type = 3;
+  string key = 4;
+  string name = 5;
+  string desc = 6;
+  int64 editable = 7;
+  string createTime = 8;
+  string updateTime = 9;
+}
+
+// 获取客户端权限类型可选项
+message GetPermTypeOptionsReq {
+  int64 clientId = 1;
+}
+
+message GetPermTypeOptionsResp {
+  repeated string list = 1;
+}
+
+// 获取客户端所有权限
+message GetPermListReq {
+  int64 clientId = 1;
+  string type = 2;
+}
+
+message GetPermListResp {
+  repeated Perm list = 1;
+}
+
+// 根据角色ID获取权限
+message GetPermListByRoleIdReq {
+  int64 roleId = 1;
+}
+
+message GetPermListByRoleIdResp {
+  repeated Perm list = 1;
+}
+
+// 获取用户权限ID列表
+message GetPermIdsByUidReq {
+  int64 clientId = 1;
+  int64 uid = 2;
+  string permType = 3;
+}
+
+message GetPermIdsByUidResp {
+  repeated int64 list = 1;
+}
+
+// 获取用户权限Key列表
+message GetPermKeysByUidReq {
+  int64 clientId = 1;
+  int64 uid = 2;
+  string permType = 3;
+}
+message GetPermKeysByUidResp {
+  repeated string list = 1;
+}
+
+// 获取组关联权限ID列表
+message GetPermIdsByGroupIdReq {
+  int64 groupId = 1;
+}
+message GetPermIdsByGroupIdResp {
+  repeated int64 list = 1;
+}
+
+// 获取组关联权限Key列表
+message GetPermKeysByGroupIdReq {
+  int64 groupId = 1;
+}
+message GetPermKeysByGroupIdResp {
+  repeated string list = 1;
+}
+
+
+// 获取权限分页列表
+message GetPermPageListReq {
+  int64 page = 1;
+  int64 pageSize = 2;
+  int64 clientId = 3;
+  string type = 4;
+  string editable = 5;
+  string search = 6;
+}
+
+message GetPermPageListResp {
+  int64 page = 1;
+  int64 pageSize = 2;
+  int64 total = 3;
+  repeated Perm list = 4;
+}
+
+// 添加权限
+message AddPermReq {
+  int64 clientId = 1;
+  string type = 2;
+  string key = 3;
+  string name = 4;
+  string desc = 5;
+}
+
+message AddPermResp {
+}
+
+
+
+// 批量添加权限
+message PermItem {
+  string type = 1;
+  string key = 2;
+  string name = 3;
+  string desc = 4;
+  int64 editable = 5;
+}
+
+message BatchAddPermReq {
+  int64 clientId = 1;
+  repeated PermItem list = 2;
+}
+
+message BatchAddPermResp {
+}
+
+
+// 更新权限
+message UpdatePermReq {
+  int64 id = 1;
+  int64 clientId = 2;
+  string type = 3;
+  string key = 4;
+  string name = 5;
+  string desc = 6;
+}
+
+message UpdatePermResp {
+}
+
+// 删除权限
+message DeletePermReq {
+  int64 id = 1;
+}
+
+message DeletePermResp {
+}
+
+// 根据Key删除权限
+message DeletePermByKeyReq {
+  int64 clientId = 1;
+  string key = 2;
+}
+
+message DeletePermByKeyResp {
+}
+// ------------------------------------------
+
+message Role {
+  int64 id = 1;
+  int64 clientId = 2;
+  string name = 3;
+  string desc = 4;
+  int64 editable = 5;
+  string createTime = 6;
+  string updateTime = 7;
+}
+
+// 获取客户端所有角色
+message GetRoleListReq {
+  int64 clientId = 1;
+  string editable = 2;
+}
+
+message GetRoleListResp {
+  repeated Role list = 1;
+}
+
+// 通过roleName获取角色
+message GetRoleByNameReq {
+  int64 clientId = 1;
+  string name = 2;
+}
+
+message GetRoleByNameResp {
+  Role role = 1;
+}
+
+// 添加角色
+message AddRoleReq {
+  int64 client_id = 1;
+  string name = 2;
+  string desc = 3;
+  repeated string permissions = 4;
+}
+
+message AddRoleResp {
+}
+
+// 更新或添加角色
+message UpsertRoleReq {
+  int64 clientId = 1;
+  string name = 2;
+  string desc = 3;
+  int64 editable = 4;
+}
+
+message UpsertRoleResp {
+  Role role = 1;
+}
+
+
+// 更新角色
+message UpdateRoleReq {
+  int64 id = 1;
+  int64 client_id = 2;
+  string name = 3;
+  string desc = 4;
+  repeated string permissions = 5;
+}
+
+message UpdateRoleResp {
+}
+
+// 删除角色
+message DeleteRoleReq {
+  int64 id = 1;
+}
+
+message DeleteRoleResp {
+}
+
+// 获取组关联的所有角色ID
+message GetRoleIdsByGroupIdReq {
+  int64 id = 1;
+}
+
+message GetRoleIdsByGroupIdResp {
+  repeated int64 roles = 1;
+}
+
+// ------------------------------------------
+
+message Group {
+  int64 id = 1;
+  int64 clientId = 2;
+  string name = 3;
+  string desc = 4;
+  int64 editable = 5;
+  string createTime = 6;
+  string updateTime = 7;
+}
+
+// GetGroupByName
+message GetGroupByNameReq {
+  int64 clientId = 1;
+  string name = 2;
+}
+
+message GetGroupByNameResp {
+  Group group = 1;
+}
+
+// 获取用户关联组列表
+message GetGroupListByUidReq {
+  int64 clientId = 1;
+  int64 uid = 2;
+}
+
+message GetGroupListByUidResp {
+  repeated Group list = 1;
+}
+
+// 获取客户端所有组
+message GetGroupListReq {
+  int64 clientId = 1;
+  string editable = 2;
+}
+
+message GetGroupListResp {
+  repeated Group list = 1;
+}
+
+// 添加组
+message AddGroupReq {
+  int64 client_id = 1;
+  string name = 2;
+  string desc = 3;
+  repeated int64 roles = 4;
+}
+
+message AddGroupResp {
+}
+
+// 更新或添加组
+message UpsertGroupReq {
+  int64 clientId = 1;
+  string name = 2;
+  string desc = 3;
+  int64 editable = 4;
+}
+
+message UpsertGroupResp {
+  Group group = 1;
+}
+
+
+// 更新组
+message UpdateGroupReq {
+  int64 id = 1;
+  int64 client_id = 2;
+  string name = 3;
+  string desc = 4;
+  repeated int64 roles = 5;
+}
+
+message UpdateGroupResp {
+}
+
+// 删除组
+message DeleteGroupReq {
+  int64 id = 1;
+}
+
+message DeleteGroupResp {
+}
+
+// ------------------------------------------
+
+message User {
+  int64 uid = 1;
+  string nickname = 2;
+  repeated int64 groups = 4;
+  repeated int64 roles = 5;
+}
+
+message UserInfo {
+  int64 uid = 1;
+  string nickname = 2;
+  string email = 3;
+  string phone = 4;
+}
+
+// 获取组关联用户
+message GetUserByGroupIdReq {
+  int64 clientId = 1;
+  int64 groupId = 2;
+}
+
+message GetUserByGroupIdResp {
+  repeated UserInfo list = 1;
+}
+
+// 获取用户分页列表
+message GetUserPageListReq {
+  int64 page = 1;
+  int64 pageSize = 2;
+  int64 clientId = 3;
+  int64 groupId = 4;
+  int64 roleId = 5;
+  string search = 6;
+}
+
+message GetUserPageListResp {
+  int64 page = 1;
+  int64 pageSize = 2;
+  int64 total = 3;
+  repeated User list = 4;
+}
+
+// 更新用户权限
+message UpdateUserPermReq {
+  int64 uid = 1;
+  int64 clientId = 2;
+  repeated int64 groups = 3;
+  repeated int64 roles = 4;
+}
+
+message UpdateUserPermResp {
+}
+
+// 用户入组
+message AddUserGroupReq {
+  int64 uid = 1;
+  int64 clientId = 2;
+  int64 groupId = 3;
+}
+
+message AddUserGroupResp {
+}
+
+// 用户出组
+message RemoveUserGroupReq {
+  int64 uid = 1;
+  int64 clientId = 2;
+  int64 groupId = 3;
+}
+message RemoveUserGroupResp {
+}
+
+// 用户添加角色
+message AddUserRoleReq {
+  int64 uid = 1;
+  int64 clientId = 2;
+  int64 roleId = 3;
+}
+
+message AddUserRoleResp {
+}
+
+// 用户移除角色
+message RemoveUserRoleReq {
+  int64 uid = 1;
+  int64 clientId = 2;
+  int64 roleId = 3;
+}
+message RemoveUserRoleResp {
+}
+
+
+// 同步 UAM-Admin 客户端
+message SyncSysClientReq {
+  string appCode = 1;
+  string name = 2;
+}
+
+message SyncSysClientResp {
+  Client client = 1;
+}
+
+
+
+// services
+service Uam {
+  // GetAuthLocalByUsername 根据用户名查询本地认证记录
+  rpc getAuthLocalByUsername(GetAuthLocalByUsernameReq) returns (GetAuthLocalByUsernameResp);
+  // AddAuthLocal 添加本地认证记录
+  rpc addAuthLocal(AddAuthLocalReq) returns (AddAuthLocalResp);
+  rpc getUserInfo(GetUserInfoReq) returns(GetUserInfoResp);
+  rpc getClientList(GetClientListReq) returns (GetClientListResp);
+  // 通过AppCode列表查询客户端
+  rpc getClientListByCodes(GetClientListByCodesReq) returns (GetClientListByCodesResp);
+  // 通过AppCode查询客户端
+  rpc getClientByCode(GetClientByCodeReq) returns (GetClientByCodeResp);
+  rpc addClient(AddClientReq) returns (AddClientResp);
+  rpc updateClient(UpdateClientReq) returns (UpdateClientResp);
+  rpc deleteClient(DeleteClientReq) returns (DeleteClientResp);
+
+  rpc getPermTypeOptions(GetPermTypeOptionsReq) returns (GetPermTypeOptionsResp);
+  rpc getPermList(GetPermListReq) returns (GetPermListResp);
+  rpc getPermPageList(GetPermPageListReq) returns (GetPermPageListResp);
+  rpc getPermListByRoleId(GetPermListByRoleIdReq) returns (GetPermListByRoleIdResp);
+  // 获取用户权限Id列表
+  rpc getPermIdsByUid(GetPermIdsByUidReq) returns (GetPermIdsByUidResp);
+  // 获取用户权限Key列表
+  rpc getPermKeysByUid(GetPermKeysByUidReq) returns (GetPermKeysByUidResp);
+
+  // 获取组关联的权限Id列表
+  rpc getPermIdsByGroupId(GetPermIdsByGroupIdReq) returns (GetPermIdsByGroupIdResp);
+  // 获取组关联的权限Key列表
+  rpc getPermKeysByGroupId(GetPermKeysByGroupIdReq) returns (GetPermKeysByGroupIdResp);
+  
+  // 添加权限
+  rpc addPerm(AddPermReq) returns (AddPermResp);
+  // 更新权限
+  rpc updatePerm(UpdatePermReq) returns (UpdatePermResp);
+  // 根据ID删除权限
+  rpc deletePerm(DeletePermReq) returns (DeletePermResp);
+  // 根据key删除权限
+  rpc deletePermByKey(DeletePermByKeyReq) returns (DeletePermByKeyResp);
+  // 批量添加权限
+  rpc batchAddPerm(BatchAddPermReq) returns (BatchAddPermResp);
+
+  // 获取所有角色列表，支持按是否可编辑筛选
+  rpc getRoleList(GetRoleListReq) returns (GetRoleListResp);
+  // 通过roleName查询role
+  rpc getRoleByName(GetRoleByNameReq) returns (GetRoleByNameResp);
+  rpc addRole(AddRoleReq) returns (AddRoleResp);
+  // 更新或创建角色
+  rpc upsertRole(UpsertRoleReq) returns (UpsertRoleResp);
+  rpc updateRole(UpdateRoleReq) returns (UpdateRoleResp);
+  rpc deleteRole(DeleteRoleReq) returns (DeleteRoleResp);
+  rpc getRoleIdsByGroupId(GetRoleIdsByGroupIdReq) returns (GetRoleIdsByGroupIdResp);
+
+  // 通过groupName查询group
+  rpc getGroupByName(GetGroupByNameReq) returns (GetGroupByNameResp);
+  // 获取用户关联组列表
+  rpc getGroupListByUid(GetGroupListByUidReq) returns (GetGroupListByUidResp);
+  // 获取客户端下组列表
+  rpc getGroupList(GetGroupListReq) returns (GetGroupListResp);
+  rpc addGroup(AddGroupReq) returns (AddGroupResp);
+  // 更新或创建角色
+  rpc upsertGroup(UpsertGroupReq) returns (UpsertGroupResp);
+  // 更新组
+  rpc updateGroup(UpdateGroupReq) returns (UpdateGroupResp);
+  // 删除组
+  rpc deleteGroup(DeleteGroupReq) returns (DeleteGroupResp);
+
+  // 查询组关联用户
+  rpc getUserByGroupId(GetUserByGroupIdReq) returns (GetUserByGroupIdResp);
+  // 获取用户分页列表
+  rpc getUserPageList(GetUserPageListReq) returns (GetUserPageListResp);
+  // 更新用户权限
+  rpc updateUserPerm(UpdateUserPermReq) returns (UpdateUserPermResp);
+  // 用户入组
+  rpc addUserGroup(AddUserGroupReq) returns (AddUserGroupResp);
+  // 用户出组
+  rpc removeUserGroup(RemoveUserGroupReq) returns (RemoveUserGroupResp);
+  // 用户添加角色
+  rpc addUserRole(AddUserRoleReq) returns (AddUserRoleResp);
+  // 用户移除角色
+  rpc removeUserRole(RemoveUserRoleReq) returns (RemoveUserRoleResp);
+
+  // 同步系统客户端
+  rpc syncSysClient(SyncSysClientReq) returns (SyncSysClientResp);
+
+  // 获取系统客户端
+  rpc getSysClient(GetSysClientReq) returns (GetSysClientResp);
+
+}

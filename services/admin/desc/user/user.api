@@ -1,0 +1,40 @@
+syntax = "v1"
+
+
+// 获取权限分页列表
+type (
+	UserItem {
+		Uid      int64   `json:"uid"`
+		Nickname string  `json:"nickname"`
+		Groups   []int64 `json:"groups"`
+		Roles    []int64 `json:"roles"`
+	}
+
+	UserPageListReq {
+		Page     int64  `form:"page"`
+		PageSize int64  `form:"pageSize"`
+		ClientId int64  `form:"client_id"`
+		GroupId  int64  `form:"group_id,optional"`
+		RoleId   int64  `form:"role_id,optional"`
+		Search   string `form:"search,optional"`
+	}
+
+	UserPageListResp {
+		Page     int64      `json:"page"`
+		PageSize int64      `json:"pageSize"`
+		Total    int64      `json:"total"`
+		List     []UserItem `json:"list"`
+	}
+)
+
+type (
+	UpdateUserPermReq {
+		Uid      int64   `path:"uid"`
+		ClientId int64   `json:"client_id"`
+		Groups   []int64 `json:"groups"`
+		Roles    []int64 `json:"roles"`
+	}
+
+	UpdateUserPermResp {
+	}
+)

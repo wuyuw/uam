@@ -1,0 +1,37 @@
+Name: uam-admin-api
+Host: 0.0.0.0
+Port: 8888
+
+Log:
+  ServiceName: uam-admin-api
+  Encoding: json
+  Mode: file
+  Level: info
+  KeepDays: 90
+
+Redis:
+  Host: 127.0.0.1:6379
+
+System:
+  Env: dev
+  FeIndex: http://localhost:8000/
+  ClientName: UAM后台
+  ClientCode: uam-admin
+  AdminRole: UAM管理员
+
+JwtAuth:
+  AccessSecret: ae0536f9-6450-4606-8e13-5a19ed505da0
+  AccessExpire: 3600
+
+
+UamRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: uamrpc.rpc
+
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4102
+  Path: /metrics
+

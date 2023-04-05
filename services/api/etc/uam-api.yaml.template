@@ -1,0 +1,25 @@
+Name: uam-api
+Host: 0.0.0.0
+Port: 7777
+
+Log:
+  ServiceName: uam-api
+  Encoding: json
+  Mode: file
+  Level: info
+  KeepDays: 90
+
+
+Redis:
+  Host: 127.0.0.1:6379
+
+UamRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: uamrpc.rpc
+
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4103
+  Path: /metrics

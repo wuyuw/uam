@@ -1,0 +1,35 @@
+Name: uam-job
+
+Log:
+  Encoding: plain
+
+Mysql:
+  Addr: 127.0.0.1:3306
+  Config: charset=utf8mb4&parseTime=True&loc=Local
+  Database: uam
+  Username: root
+  Password: 123456
+  MaxIdleConns: 10
+  MaxOpenConns: 100
+  LogMode: "silent"
+  LogZap: false
+
+Cron:
+  SyncOaUser: "0 23 * * *"
+
+RelUpdateMq:
+  Name: kq-relupdate
+  Brokers:
+    - 10.1.160.1:9092
+    - 10.1.160.2:9092
+    - 10.1.160.3:9092
+  Group: uam-relupdate
+  Topic: topic-uam-relupdate
+  Offset: first
+  Consumers: 1
+
+
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4104
+  Path: /metrics

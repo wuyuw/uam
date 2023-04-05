@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  uam-job:
+    image: wuyuw/uam-job:0.0.1
+    container_name: uam-job
+    volumes:
+      - /Users/fifteen/conf/uam/uam-job.yaml:/etc/uam-job.yaml
+      - /Users/fifteen/logs/uam/uam-job:/logs
+    restart: always
+    networks:
+      - net
+  uam-rpc:
+    image: wuyuw/uam-rpc:0.0.1
+    container_name: uam-rpc
+    ports:
+      - "5101:8888"
+      - "4101:4101"
+    volumes:
+      - /Users/fifteen/conf/uam/uamrpc.yaml:/etc/uamrpc.yaml
+      - /Users/fifteen/logs/uam/uam-rpc:/logs
+    restart: always
+    networks:
+      - net
+  uam-admin:
+    image: wuyuw/uam-admin:0.0.1
+    container_name: uam-admin
+    depends_on:
+      - uam-job
+      - uam-rpc
+    ports:
+      - "5102:8888"
+      - "4102:4102"
+    volumes:
+      - /Users/fifteen/conf/uam/uam-admin-api.yaml:/etc/uam-admin-api.yaml
+      - /Users/fifteen/logs/uam/uam-admin:/logs
+    restart: always
+    networks:
+      - net
+  uam-api:
+    image: wuyuw/uam-api:0.0.1
+    container_name: uam-api
+    depends_on:
+      - uam-job
+      - uam-rpc
+    ports:
+      - "5103:8888"
+      - "4103:4103"
+    volumes:
+      - /Users/fifteen/conf/uam/uam-api.yaml:/etc/uam-api.yaml
+      - /Users/fifteen/logs/uam/uam-api:/logs
+    restart: always
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.80.0/20

@@ -1,0 +1,72 @@
+syntax = "v1"
+
+
+// 获取权限分页列表
+type (
+	PermItem {
+		Id         int64  `json:"id"`
+		ClientId   int64  `json:"client_id"`
+		Type       string `json:"type"`
+		Key        string `json:"key"`
+		Name       string `json:"name"`
+		Desc       string `json:"desc"`
+		Editable   int64  `json:"editable"`
+		CreateTime string `json:"create_time"`
+		UpdateTime string `json:"update_time"`
+	}
+
+	PermPageListReq {
+		Page     int64  `form:"page"`
+		PageSize int64  `form:"pageSize"`
+		ClientId int64  `form:"client_id"`
+		Type     string `form:"type,optional"`
+		Editable string `form:"editable,optional"`
+		Search   string `form:"search,optional"`
+	}
+
+	PermPageListResp {
+		Page     int64      `json:"page"`
+		PageSize int64      `json:"pageSize"`
+		Total    int64      `json:"total"`
+		List     []PermItem `json:"list"`
+	}
+)
+
+// 添加权限
+type (
+	AddPermReq {
+		ClientId int64  `json:"client_id"`
+		Type     string `json:"type"`
+		Key      string `json:"key"`
+		Name     string `json:"name"`
+		Desc     string `json:"desc"`
+	}
+
+	AddPermResp {
+	}
+)
+
+// 更新权限
+type (
+	UpdatePermReq {
+		Id       int64  `path:"id"`
+		ClientId int64  `json:"client_id"`
+		Type     string `json:"type"`
+		Key      string `json:"key"`
+		Name     string `json:"name"`
+		Desc     string `json:"desc"`
+	}
+
+	UpdatePermResp {
+	}
+)
+
+// 删除权限
+type (
+	DeletePermReq {
+		Id int64 `path:"id"`
+	}
+
+	DeletePermResp {
+	}
+)

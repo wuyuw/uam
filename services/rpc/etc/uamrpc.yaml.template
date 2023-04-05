@@ -1,0 +1,43 @@
+Name: uamrpc.rpc
+ListenOn: 0.0.0.0:5101
+
+Log:
+  ServiceName: uam-rpc
+  Encoding: json
+  Mode: file
+  Level: info
+  KeepDays: 90
+
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: uamrpc.rpc
+
+Mysql:
+  Addr: 127.0.0.1:3306
+  Config: charset=utf8mb4&parseTime=True&loc=Local
+  Database: uam
+  Username: root
+  Password: 123456
+  MaxIdleConns: 10
+  MaxOpenConns: 100
+  LogMode: "silent"
+  LogZap: false
+
+Client:
+  PrivateKeySalt: 9RBN7y3t
+
+IdGen:
+  WorkerId: 1
+
+RelUpdateMq:
+  Brokers:
+    - 10.1.160.1:9092
+    - 10.1.160.2:9092
+    - 10.1.160.3:9092
+  Topic: topic-uam-relupdate
+
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4101
+  Path: /metrics

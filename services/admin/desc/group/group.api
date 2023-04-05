@@ -1,0 +1,57 @@
+syntax = "v1"
+
+type (
+	Group {
+		Id         int64   `json:"id"`
+		ClientId   int64   `json:"client_id"`
+		Name       string  `json:"name"`
+		Desc       string  `json:"desc"`
+		Editable   int64   `json:"editable"`
+		CreateTime string  `json:"create_time"`
+		UpdateTime string  `json:"update_time"`
+		Roles      []int64 `json:"roles"`
+	}
+
+	GroupListReq {
+		ClientId int64  `form:"client_id"`
+		Editable string `form:"editable,optional"`
+	}
+
+	GroupListResp {
+		List []Group `json:"list"`
+	}
+)
+
+type (
+	AddGroupReq {
+		ClientId int64   `json:"client_id"`
+		Name     string  `json:"name"`
+		Desc     string  `json:"desc"`
+		Roles    []int64 `json:"roles"`
+	}
+
+	AddGroupResp {
+	}
+)
+
+type (
+	UpdateGroupReq {
+		Id       int64   `path:"id"`
+		ClientId int64   `json:"client_id"`
+		Name     string  `json:"name"`
+		Desc     string  `json:"desc"`
+		Roles    []int64 `json:"roles"`
+	}
+
+	UpdateGroupResp {
+	}
+)
+
+type (
+	DeleteGroupReq {
+		Id int64 `path:"id"`
+	}
+
+	DeleteGroupResp {
+	}
+)

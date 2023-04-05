@@ -1,0 +1,381 @@
+syntax = "v1"
+
+info(
+	title: "UAM-API服务开放接口"
+	desc: "UAM-API服务开放接口"
+	author: "will515"
+	email: "wuyuw515@gmail.com"
+	version: 1.0
+)
+
+type (
+	UserPermIdsReq {
+		AppCode     string `form:"appCode"`
+		RequestTime int64  `form:"requestTime"`
+		Sign        string `form:"sign"`
+		Uid         int64  `form:"uid"`
+		PermType    string `form:"permType,optional"`
+	}
+
+	UserPermIdsResp {
+		List []int64 `json:"list"`
+	}
+)
+
+type (
+	UserPermKeysReq {
+		AppCode     string `form:"appCode"`
+		RequestTime int64  `form:"requestTime"`
+		Sign        string `form:"sign"`
+		Uid         int64  `form:"uid"`
+		PermType    string `form:"permType,optional"`
+	}
+	UserPermKeysResp {
+		List []string `json:"list"`
+	}
+)
+
+type (
+	UserGroupsReq {
+		AppCode     string `form:"appCode"`
+		RequestTime int64  `form:"requestTime"`
+		Sign        string `form:"sign"`
+		Uid         int64  `form:"uid"`
+	}
+	UserGroupsResp {
+		List []string `json:"list"`
+	}
+)
+
+type (
+	UserGroupReq {
+		AppCode     string `json:"appCode"`
+		RequestTime int64  `json:"requestTime"`
+		Sign        string `json:"sign"`
+		Uid         int64  `json:"uid"`
+		GroupId     int64  `json:"groupId"`
+	}
+	UserGroupResp {
+	}
+)
+
+type (
+	UserRoleReq {
+		AppCode     string `json:"appCode"`
+		RequestTime int64  `json:"requestTime"`
+		Sign        string `json:"sign"`
+		Uid         int64  `json:"uid"`
+		RoleId      int64  `json:"roleId"`
+	}
+	UserRoleResp {
+	}
+)
+
+// Need Auth
+@server(
+	prefix: "/uam/api/v1"
+	group: user
+	middleware: ApiAuth
+)
+service uam-api {
+	
+	@doc "获取用户权限ID列表"
+	@handler UserPermIds
+	get /user/permission-ids (UserPermIdsReq) returns (UserPermIdsResp)
+	
+	@doc "获取用户权限Keys列表"
+	@handler UserPermKeys
+	get /user/permission-keys (UserPermKeysReq) returns (UserPermKeysResp)
+	
+	@doc "获取用户关联组"
+	@handler UserGroups
+	get /user-group (UserGroupsReq) returns (UserGroupsResp)
+	
+	@doc "用户入组"
+	@handler AddUserGroup
+	post /user-group (UserGroupReq) returns (UserGroupResp)
+	
+	@doc "用户出组"
+	@handler RemoveUserGroup
+	delete /user-group (UserGroupReq) returns (UserGroupResp)
+	
+	@doc "用户添加角色"
+	@handler AddUserRole
+	post /user-role (UserRoleReq) returns (UserRoleResp)
+	
+	@doc "用户移除角色"
+	@handler RemoveUserRole
+	delete /user-role (UserRoleReq) returns (UserRoleResp)
+}
+
+type (
+	PermItem {
+		Id         int64  `json:"id"`
+		Type       string `json:"type"`
+		Key        string `json:"key"`
+		Name       string `json:"name"`
+		Desc       string `json:"desc"`
+		CreateTime string `json:"create_time"`
+		UpdateTime string `json:"update_time"`
+	}
+
+	PermListReq {
+		AppCode     string `form:"appCode"`
+		RequestTime int64  `form:"requestTime"`
+		Sign        string `form:"sign"`
+	}
+	PermListResp {
+		List []PermItem `json:"list"`
+	}
+)
+
+type (
+	PermRecord {
+		Type string `json:"type"`
+		Key  string `json:"key"`
+		Name string `json:"name"`
+		Desc string `json:"desc"`
+	}
+
+	AddPermBatchReq {
+		AppCode     string       `json:"appCode"`
+		RequestTime int64        `json:"requestTime"`
+		Sign        string       `json:"sign"`
+		Permissions []PermRecord `json:"permissions"`
+	}
+	AddPermBatchResp {
+	}
+)
+
+type (
+	DeletePermReq {
+		AppCode     string `json:"appCode"`
+		RequestTime int64  `json:"requestTime"`
+		Sign        string `json:"sign"`
+		Key         string `json:"key"`
+	}
+	DeletePermResp {
+	}
+)
+
+@server(
+	prefix: "/uam/api/v1"
+	group: permission
+	middleware: ApiAuth
+)
+service uam-api {
+	
+	@doc "获取所有权限"
+	@handler PermList
+	get /permissions (PermListReq) returns (PermListResp)
+	
+	@doc "批量添加权限"
+	@handler AddPermBatch
+	post /permission/batch (AddPermBatchReq) returns (AddPermBatchResp)
+	
+	@doc "根据Key删除权限"
+	@handler DeletePerm
+	delete /permission (DeletePermReq) returns (DeletePermResp)
+	
+}
+
+type (
+	Role {
+		Id         int64  `json:"id"`
+		Name       string `json:"name"`
+		Desc       string `json:"desc"`
+		CreateTime string `json:"create_time"`
+		UpdateTime string `json:"update_time"`
+	}
+
+	RoleListReq {
+		AppCode     string `form:"appCode"`
+		RequestTime int64  `form:"requestTime"`
+		Sign        string `form:"sign"`
+	}
+	RoleListResp {
+		List []Role `json:"list"`
+	}
+)
+
+type (
+	GetRoleByNameReq {
+		AppCode     string `form:"appCode"`
+		RequestTime int64  `form:"requestTime"`
+		Sign        string `form:"sign"`
+		RoleName    string `form:"roleName"`
+	}
+	GetRoleByNameResp {
+		List []Role `json:"list"`
+	}
+)
+
+type (
+	UpsertRoleReq {
+		AppCode     string `json:"appCode"`
+		RequestTime int64  `json:"requestTime"`
+		Sign        string `json:"sign"`
+		RoleName    string `json:"roleName"`
+		RoleDesc    string `json:"roleDesc"`
+	}
+	UpsertRoleResp {
+		Role Role `json:"role"`
+	}
+)
+
+type (
+	UpdateRolePermReq {
+		AppCode     string   `json:"appCode"`
+		RequestTime int64    `json:"requestTime"`
+		Sign        string   `json:"sign"`
+		RoleName    string   `json:"roleName"`
+		PermKeys    []string `json:"permissionKeys"`
+	}
+	UpdateRolePermResp {
+	}
+)
+
+@server(
+	prefix: "/uam/api/v1"
+	group: role
+	middleware: ApiAuth
+)
+service uam-api {
+	
+	@doc "获取所有角色"
+	@handler RoleList
+	get /roles (RoleListReq) returns (RoleListResp)
+	
+	@doc "通过角色名查询角色"
+	@handler GetRoleByName
+	get /role (GetRoleByNameReq) returns (GetRoleByNameResp)
+	
+	@doc "添加或更新角色"
+	@handler UpsertRole
+	post /role (UpsertRoleReq) returns (UpsertRoleResp)
+	
+	@doc "更新角色及关联权限"
+	@handler UpdateRolePerm
+	put /role (UpdateRolePermReq) returns (UpdateRolePermResp)
+	
+}
+
+type (
+	Group {
+		Id         int64  `json:"id"`
+		Name       string `json:"name"`
+		Desc       string `json:"desc"`
+		CreateTime string `json:"create_time"`
+		UpdateTime string `json:"update_time"`
+	}
+
+	GroupListReq {
+		AppCode     string `form:"appCode"`
+		RequestTime int64  `form:"requestTime"`
+		Sign        string `form:"sign"`
+	}
+	GroupListResp {
+		List []Group `json:"list"`
+	}
+)
+
+type (
+	GetGroupByNameReq {
+		AppCode     string `form:"appCode"`
+		RequestTime int64  `form:"requestTime"`
+		Sign        string `form:"sign"`
+		GroupName   string `form:"groupName"`
+	}
+	GetGroupByNameResp {
+		List []Group `json:"list"`
+	}
+)
+
+type (
+	UpsertGroupReq {
+		AppCode     string `json:"appCode"`
+		RequestTime int64  `json:"requestTime"`
+		Sign        string `json:"sign"`
+		GroupName   string `json:"groupName"`
+		GroupDesc   string `json:"groupDesc"`
+	}
+	UpsertGroupResp {
+		Group Group `json:"group"`
+	}
+)
+
+type (
+	User {
+		Uid      int64  `json:"uid"`
+		Nickname string `json:"nickname"`
+		Email    string `json:"email"`
+		Phone    string `json:"phone"`
+	}
+	GetUserByGroupNameReq {
+		AppCode     string `form:"appCode"`
+		RequestTime int64  `form:"requestTime"`
+		Sign        string `form:"sign"`
+		GroupName   string `form:"groupName"`
+	}
+	GetUserByGroupNameResp {
+		List []User `json:"list"`
+	}
+)
+
+type (
+	GroupPermIdsReq {
+		AppCode     string `form:"appCode"`
+		RequestTime int64  `form:"requestTime"`
+		Sign        string `form:"sign"`
+		GroupName   string `form:"groupName"`
+	}
+
+	GroupPermIdsResp {
+		List []int64 `json:"list"`
+	}
+)
+
+type (
+	GroupPermKeysReq {
+		AppCode     string `form:"appCode"`
+		RequestTime int64  `form:"requestTime"`
+		Sign        string `form:"sign"`
+		GroupName   string `form:"groupName"`
+	}
+	GroupPermKeysResp {
+		List []string `json:"list"`
+	}
+)
+
+@server(
+	prefix: "/uam/api/v1"
+	group: group
+	middleware: ApiAuth
+)
+service uam-api {
+	
+	@doc "获取所有组"
+	@handler GroupList
+	get /groups (GroupListReq) returns (GroupListResp)
+	
+	@doc "通过组名查询组"
+	@handler GetGroupByName
+	get /group (GetGroupByNameReq) returns (GetGroupByNameResp)
+	
+	@doc "添加或更新组"
+	@handler UpsertGroup
+	post /group (UpsertGroupReq) returns (UpsertGroupResp)
+	
+	@doc "获取组关联所有用户"
+	@handler GetUserByGroupName
+	get /group/users (GetUserByGroupNameReq) returns (GetUserByGroupNameResp)
+	
+	@doc "获取组关联权限ID列表"
+	@handler GroupPermIds
+	get /group/permission-ids (GroupPermIdsReq) returns (GroupPermIdsResp)
+	
+	@doc "获取组关联权限Keys列表"
+	@handler GroupPermKeys
+	get /group/permission-keys (GroupPermKeysReq) returns (GroupPermKeysResp)
+	
+}

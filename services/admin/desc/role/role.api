@@ -1,0 +1,59 @@
+syntax = "v1"
+
+
+// 获取所有角色
+type (
+	Role {
+		Id          int64    `json:"id"`
+		ClientId    int64    `json:"client_id"`
+		Name        string   `json:"name"`
+		Desc        string   `json:"desc"`
+		Editable    int64    `json:"editable"`
+		CreateTime  string   `json:"create_time"`
+		UpdateTime  string   `json:"update_time"`
+		Permissions []string `json:"permissions"`
+	}
+
+	RoleListReq {
+		ClientId int64  `form:"client_id"`
+		Editable string `form:"editable,optional"`
+	}
+
+	RoleListResp {
+		List []Role `json:"list"`
+	}
+)
+
+type (
+	AddRoleReq {
+		ClientId    int64    `json:"client_id"`
+		Name        string   `json:"name"`
+		Desc        string   `json:"desc"`
+		Permissions []string `json:"permissions"`
+	}
+
+	AddRoleResp {
+	}
+)
+
+type (
+	UpdateRoleReq {
+		Id          int64    `path:"id"`
+		ClientId    int64    `json:"client_id"`
+		Name        string   `json:"name"`
+		Desc        string   `json:"desc"`
+		Permissions []string `json:"permissions"`
+	}
+
+	UpdateRoleResp {
+	}
+)
+
+type (
+	DeleteRoleReq {
+		Id int64 `path:"id"`
+	}
+
+	DeleteRoleResp {
+	}
+)

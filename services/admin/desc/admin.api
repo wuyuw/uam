@@ -1,0 +1,171 @@
+syntax = "v1"
+
+info(
+	title: "UAM后台管理接口"
+	desc: "UAM后台管理接口"
+	author: "will515"
+	email: "wuyuw515@gmail.com"
+	version: 1.0
+)
+
+import (
+	"core/core.api"
+	"user/user.api"
+	"client/client.api"
+	"permission/permission.api"
+	"role/role.api"
+	"group/group.api"
+)
+
+// No Auth
+@server(
+	prefix: "/uam/admin/v1"
+	group: auth
+)
+service uam-admin-api {
+	@doc "注册接口"
+	@handler Register
+	post /register (RegisterReq) returns (RegisterResp)
+	
+	@doc "登录接口"
+	@handler Login
+	post /login (LoginReq) returns (LoginResp)
+}
+
+// Need Auth
+@server(
+	prefix: "/uam/admin/v1"
+	group: core
+	middleware: JwtAuth
+)
+service uam-admin-api {
+	@doc "获取登录用户信息"
+	@handler UserInfo
+	get /userinfo (UserInfoReq) returns (UserInfoResp)
+	
+	@doc "用户登出"
+	@handler Logout
+	put /logout (LogoutReq) returns (LogoutResp)
+	
+}
+
+// NeedaAuth NeedAccess
+@server(
+	prefix: "/uam/admin/v1"
+	group: client
+	middleware: JwtAuth, AccessControl
+)
+service uam-admin-api {
+	@doc "获取接入客户端列表"
+	@handler ClientList
+	get /clients (ClientListReq) returns (ClientListResp)
+	
+	@doc "添加客户端"
+	@handler AddClient
+	post /client (AddClientReq) returns (AddClientResp)
+	
+	@doc "更新客户端"
+	@handler UpdateClient
+	put /client/:id (UpdateClientReq) returns (UpdateClientResp)
+	
+	@doc "删除客户端"
+	@handler DeleteClient
+	delete /client/:id (DeleteClientReq) returns (DeleteClientResp)
+	
+	@doc "获取客户端可选项"
+	@handler ClientOptions
+	get /client-options (ClientOptionsReq) returns (ClientOptionsResp)
+	
+}
+
+// NeedAuth NeedAccess
+@server(
+	prefix: "/uam/admin/v1"
+	group: permission
+	middleware: JwtAuth, AccessControl
+)
+service uam-admin-api {
+	
+	@doc "获取权限分页列表"
+	@handler PermPageList
+	get /permissions (PermPageListReq) returns (PermPageListResp)
+	
+	@doc "添加权限"
+	@handler AddPerm
+	post /permission (AddPermReq) returns (AddPermResp)
+	
+	@doc "更新权限"
+	@handler UpdatePerm
+	put /permission/:id (UpdatePermReq) returns (UpdatePermResp)
+	
+	@doc "删除权限"
+	@handler DeletePerm
+	delete /permission/:id (DeletePermReq) returns (DeletePermResp)
+	
+}
+
+// NeedAuth NeedAccess
+@server(
+	prefix: "/uam/admin/v1"
+	group: role
+	middleware: JwtAuth, AccessControl
+)
+service uam-admin-api {
+	@doc "获取角色列表"
+	@handler RoleList
+	get /roles (RoleListReq) returns (RoleListResp)
+	
+	@doc "添加角色"
+	@handler AddRole
+	post /role (AddRoleReq) returns (AddRoleResp)
+	
+	@doc "更新角色"
+	@handler UpdateRole
+	put /role/:id (UpdateRoleReq) returns (UpdateRoleResp)
+	
+	@doc "删除角色"
+	@handler DeleteRole
+	delete /role/:id (DeleteRoleReq) returns (DeleteRoleResp)
+}
+
+// NeedAuth NeedAccess
+@server(
+	prefix: "/uam/admin/v1"
+	group: group
+	middleware: JwtAuth, AccessControl
+)
+service uam-admin-api {
+	@doc "获取组列表"
+	@handler GroupList
+	get /groups (GroupListReq) returns (GroupListResp)
+	
+	@doc "添加组"
+	@handler AddGroup
+	post /group (AddGroupReq) returns (AddGroupResp)
+	
+	@doc "更新组"
+	@handler UpdateGroup
+	put /group/:id (UpdateGroupReq) returns (UpdateGroupResp)
+	
+	@doc "删除组"
+	@handler DeleteGroup
+	delete /group/:id (DeleteGroupReq) returns (DeleteGroupResp)
+	
+}
+
+// NeedAuth NeedAccess
+@server(
+	prefix: "/uam/admin/v1"
+	group: user
+	middleware: JwtAuth, AccessControl
+)
+service uam-admin-api {
+	@doc "获取用户列表"
+	@handler UserPageList
+	get /users (UserPageListReq) returns (UserPageListResp)
+	
+	@doc "更新用户权限"
+	@handler UpdateUserPerm
+	put /user/:uid (UpdateUserPermReq) returns (UpdateUserPermResp)
+	
+}

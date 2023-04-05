@@ -1,0 +1,101 @@
+syntax = "v1"
+
+
+type (
+	ClientItem {
+		Id         int64  `json:"id"`
+		Name       string `json:"name"`
+		AppCode    string `json:"app_code"`
+		PrivateKey string `json:"private_key"`
+		Department string `json:"department"`
+		Maintainer string `json:"maintainer"`
+		Status     int64  `json:"status"`
+		Type       int64  `json:"type"`
+		CreateTime string `json:"create_time"`
+		UpdateTime string `json:"update_time"`
+	}
+
+	ClientListReq {
+	}
+
+	ClientListResp {
+		List []ClientItem `json:"list"`
+	}
+)
+
+type (
+	AddClientReq {
+		Name       string `json:"name"`
+		AppCode    string `json:"app_code"`
+		Department string `json:"department"`
+		Maintainer string `json:"maintainer"`
+	}
+
+	AddClientResp {
+	}
+)
+
+type (
+	UpdateClientReq {
+		Id         int64  `path:"id"`
+		Name       string `json:"name"`
+		AppCode    string `json:"app_code"`
+		Department string `json:"department"`
+		Maintainer string `json:"maintainer"`
+		Status     int64  `json:"status"`
+	}
+
+	UpdateClientResp {
+	}
+)
+
+type (
+	DeleteClientReq {
+		Id int64 `path:"id"`
+	}
+
+	DeleteClientResp {
+	}
+)
+
+type (
+	GroupOption {
+		Id       int64  `json:"id"`
+		ClientId int64  `json:"client_id"`
+		Name     string `json:"name"`
+		Desc     string `json:"desc"`
+	}
+
+	RoleOption {
+		Id       int64  `json:"id"`
+		ClientId int64  `json:"client_id"`
+		Name     string `json:"name"`
+		Desc     string `json:"desc"`
+	}
+
+	PermOption {
+		Id       int64  `json:"id"`
+		ClientId int64  `json:"client_id"`
+		Type     string `json:"type"`
+		Key      string `json:"key"`
+		Name     string `json:"name"`
+		Desc     string `json:"desc"`
+	}
+
+	ClientOption {
+		Id        int64         `json:"id"`
+		Name      string        `json:"name"`
+		AppCode   string        `json:"app_code"`
+		Groups    []GroupOption `json:"groups"`
+		Roles     []RoleOption  `json:"roles"`
+		Perms     []PermOption  `json:"perms"`
+		PermTypes []string      `json:"permTypes"`
+	}
+
+	ClientOptionsReq {
+	}
+
+	ClientOptionsResp {
+		List []ClientOption `json:"list"`
+	}
+)

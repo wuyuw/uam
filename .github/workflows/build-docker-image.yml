@@ -50,5 +50,5 @@ jobs:
           push: true
           # docker build arg
           build-args: |
-            SERVICE=${{ service }}
+            SERVICE=${{ steps.split-service.outputs.tag_service }}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/uam-${{ steps.split-service.outputs.tag_service }}:${{ steps.split-version.outputs.tag_version }}

@@ -1,11 +1,13 @@
 # UAM
 
-统一访问管理中心--UAM (Unify Access Management Center) 
-
-注意：本项目包含多个服务，包括"UAM-后台管理-后端"、"UAM-API服务"、"UAM-RPC服务"、"UAM-Job任务调度服务"，
-"UAM-后台管理-前端"项目在这里
+统一访问管理中心--UAM (Unify Access Management Center)
 
 UAM是基于RBCA模型的统一用户权限管理中心，支持任意需要进行访问控制的系统来接入，支持Rest API及RPC接入。
+
+本项目包含多个服务，包括"UAM-后台管理-后端"、"UAM-API服务"、"UAM-RPC服务"、"UAM-Job任务调度服务"，
+[UAM-后台管理-前端](https://github.com/wuyuw/uam-admin-fe)项目在这里
+
+技术栈：`go-zero`、`gorm`、`Mysql`、`Redis`、`Kafka`、`etcd`
 
 ## 1 开发环境搭建
 

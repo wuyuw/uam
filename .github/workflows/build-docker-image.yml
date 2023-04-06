@@ -1,18 +1,29 @@
 name: build-docker-image
-run-name: building
+run-name: build uam-${{ github.ref_name }}
 on:
   push:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
     tags:
-      - 'admin-[1-9]+.[0-9]+.[0-9]+'
-      - 'api-[1-9]+.[0-9]+.[0-9]+'
-      - 'rpc-[1-9]+.[0-9]+.[0-9]+'
-      - 'job-[1-9]+.[0-9]+.[0-9]+'
+      - 'admin-[0-9]+.[0-9]+.[0-9]+'
+      - 'api-[0-9]+.[0-9]+.[0-9]+'
+      - 'rpc-[0-9]+.[0-9]+.[0-9]+'
+      - 'job-[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: split tag service
+        id: split-service
+        env:
+          TAG: ${{ github.ref_name }}
+        run: echo "tag_service=${TAG%-*}" >> $GITHUB_OUTPUT
+
+      - name: split tag version
+        id: split-version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: echo "tag_version=${TAG##*-}" >> $GITHUB_OUTPUT
       -
         name: Checkout
         uses: actions/checkout@v3
@@ -40,4 +51,4 @@ jobs:
           # docker build arg
           build-args: |
             SERVICE=${{ service }}
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/uam-${{ service }}:${{ version }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/uam-${{ steps.split-service.outputs.tag_service }}:${{ steps.split-version.outputs.tag_version }}

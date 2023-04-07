@@ -9,6 +9,10 @@ UAM是基于RBCA模型的统一用户权限管理中心，支持任意需要进�
 
 技术栈：`go-zero`、`gorm`、`Mysql`、`Redis`、`Kafka`、`etcd`
 
+系统架构
+
+<img title="" src="https://github.com/wuyuw/uam/blob/master/images/uam-framework.png?raw=true" alt="UAM架构" data-align="inline">
+
 ## 1 开发环境搭建
 
 ### 1.1 环境依赖
@@ -278,3 +282,32 @@ go run uam-admin.go
 
 3. 添加RPC接口业务逻辑
 
+## 3 基于 Github Actions 的 CI 执行自动构建镜像
+
+1. Fork 代码仓库
+
+2. 在仓库导航栏的`Settings` -> `Secrets and variables` -> `Actions` -> `New repository secret` 添加 Docker Hub 个人账户的账户名和密码
+
+   账户变量名: `DOCKERHUB_TOKEN` 
+   
+   密码变量名: `DOCKERHUB_USERNAME`
+
+3. 拉取代码
+
+   ```bash
+   $ git clone git@github.com:${usename}/uam.git
+   ```
+
+4. 打 tag，CI会根据tag的前缀构建对应服务的docker镜像并上传到Docker Hub
+
+   ```bash
+   $ git tag admin-0.0.1
+   $ git tag rpc-0.0.1
+   $ git tag job-0.0.1
+   $ git tag api-0.0.1
+   $ git push origin admin-0.0.1
+   ```
+
+5. 点击仓库导航栏的`Actions`选项卡查看 Workflow 执行情况
+
+6. 在 Docker Hub 仓库中确认镜像是否上传成功

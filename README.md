@@ -42,7 +42,7 @@ UAM是基于RBCA模型的统一用户权限管理中心，支持任意需要进�
 
 ### 资源实体关系
 
-<img title="" src="https://github.com/wuyuw/uam/blob/master/images/uam-resoures.png?raw=true" alt="UAM资源实体" data-align="inline">
+<img title="" src="https://raw.githubusercontent.com/wuyuw/uam/master/images/uam-resources.png" alt="UAM资源实体" data-align="inline">
 
 
 ## 1 开发环境搭建

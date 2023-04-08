@@ -9,9 +9,41 @@ UAM是基于RBCA模型的统一用户权限管理中心，支持任意需要进�
 
 技术栈：`go-zero`、`gorm`、`Mysql`、`Redis`、`Kafka`、`etcd`
 
-系统架构
+### 系统架构
 
 <img title="" src="https://github.com/wuyuw/uam/blob/master/images/uam-framework.png?raw=true" alt="UAM架构" data-align="inline">
+
+### 架构说明
+
+系统提供了一个后台管理平台，UAM管理员和各应用管理员可登录后台对各种资源实体进行CRUD操作。
+
+应用接入后会获得`app_id`和`app_secret`，按照接入规范即可访问`Rest API服务`获取权限相关资源，从而实现访问控制。
+
+`UAM-Admin`及`Rest API`均通过调用`RPC Service`实现对数据层的操作，通过`etcd`实现服务注册、发现。
+
+对于一些异步操作，通过基于`Kafka`实现的异步任务队列在`Task Worker`中异步执行，另外定时任务类需求可通过`Cron Job`来配置执行。
+
+目前`UAM-Admin`提供了一套简单的登录注册模块来实现用户添加，后续可同步企业内部用户表替换现有用户表，可接入OAuth认证方式替换账号密码登录。
+
+当前登录用户是通过JWT实现认证，通过redis缓存实现JWT Token续期，避免Token过期造成用户体验问题。
+
+
+### 应用接入流程
+假设应用App01需要接入UAM系统，`App01管理员`需要向`UAM系统管理员`提交接入申请，
+
+申请通过后`UAM系统管理员`在UAM后台添加客户端接入记录，并将系统生成的`app_id`和`app_secret`发给`App01管理员`，
+并授予`App01管理员`在UAM后台操作`App01`资源的权限。
+
+后续`App01管理员`也可登录UAM后台对`App01`系统下的资源实体进行CURD操作和用户访问权限管理，
+
+`App01开发人员`通过`app_id`和`app_secret`即可访问UAM开放的`Rest API服务`获取`App01`下的资源数据和用户权限数据，
+以实现访问控制管理。
+
+
+### 资源实体关系
+
+<img title="" src="https://github.com/wuyuw/uam/blob/master/images/uam-resoures.png?raw=true" alt="UAM资源实体" data-align="inline">
+
 
 ## 1 开发环境搭建
 
